@@ -20,11 +20,12 @@ class Bird {
     }
 
     // --- moving function
-    jump() {
+    jump(treshold) {
         this.speed = 10
-        this.gravity = 0.05
-        this.y -= 100
-        this.updates()
+        this.gravity = 0.5
+        this.y -= treshold + this.gravity + this.speed / 1.25
+
+        this.draw()
     }
 
     die() {
@@ -68,7 +69,6 @@ class Pipe {
         ctx.fillRect(this.x, this.y.bot, this.width, this.bottomHeight)
         ctx.fillRect(this.x, this.y.top, this.width, this.topHeight)
         ctx.fillStyle = 'green'
-        console.log(this.topHeight, this.bottomHeight)
     }
 
     updates() {
@@ -96,20 +96,31 @@ const pipes = [
     new Pipe({ x: canvas.width * 2 - 20 }),
 ]
 
+let treshold = 0
+let onJump = false
 function gameMechanics(e) {
     // --- player control
     if (e.keyCode === 32) {
-        console.log('jump')
-        player.jump()
+        onJump = true
+        treshold += 0.25
     }
 }
 
 window.addEventListener('keydown', (e) => gameMechanics(e))
+window.addEventListener('keyup', (e) => {
+    // reset treshold
+    treshold = 0
+    onJump = false
+})
 
 function animation() {
     ctx.clearRect(0, 0, canvas.width, canvas.height)
 
-    player.updates()
+    if (onJump === false) {
+        player.updates()
+    } else {
+        player.jump(treshold)
+    }
 
     pipes.forEach((p, i) => {
         p.updates()
