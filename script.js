@@ -45,36 +45,56 @@ class Bird {
     }
 }
 
+function generetaRandomHeight(treshold) {
+    const val = (Math.floor(Math.random() * (canvas.height / 2) + (Math.random() * 30)))
+
+    return val
+}
 class Pipe {
-    constructor({ bottom, height, x }) {
-        this.height = height
-        this.x = x
-        this.y = bottom ? canvas.height - this.height : 0
+    constructor({ x }) {
+        this.gap = 120
         this.width = 80
+        this.bottomHeight = generetaRandomHeight()
+        // this.bottomHeight = 80
+        // this.topHeight = canvas.height - (this.bottomHeight - this.gap)
+        this.topHeight = canvas.height - (this.bottomHeight + this.gap)
+        this.x = x
+        this.y = {
+            bot: canvas.height - this.bottomHeight,
+            top: 0
+        }
     }
 
     draw() {
-        ctx.fillRect(this.x, this.y, this.width, this.height)
+        ctx.fillRect(this.x, this.y.bot, this.width, this.bottomHeight)
+        ctx.fillRect(this.x, this.y.top, this.width, this.topHeight)
         ctx.fillStyle = 'green'
+        console.log(this.topHeight, this.bottomHeight)
     }
 
     updates() {
-        this.x -= 0.75
+        this.x -= 2
 
         this.draw()
     }
 
     regenerate() {
+        this.gap = Math.floor(Math.random() * 20) + 90
         this.x = canvas.width
+        this.bottomHeight = generetaRandomHeight()
+        this.topHeight = canvas.height - (this.bottomHeight + this.gap)
+        this.y = {
+            bot: canvas.height - this.bottomHeight,
+            top: 0
+        }
     }
 }
 
 // const map = new Map({ width: 240, height: 1280 })
 const player = new Bird({ name: 'galih', x: 12, y: 24, speed: 10 })
-const pipes = {
-    down: new Pipe({ bottom: true, height: 80, x: canvas.width }),
-    up: new Pipe({ botto: false, height: 80, x: canvas.width })
-}
+const pipes = [
+    new Pipe({ x: canvas.width }),
+]
 
 function gameMechanics(e) {
     // --- player control
@@ -91,15 +111,14 @@ function animation() {
 
     player.updates()
 
-    for (const i in pipes) {
-        pipes[i].updates()
-    }
+    pipes.forEach(p => {
+        p.updates()
 
-    if (pipes.up.x + pipes.up.width <= 0) {
-        for (const i in pipes) {
-            pipes[i].regenerate()
+        if (p.x + p.width <= 0) {
+            p.regenerate()
         }
-    }
+    })
+
 
     requestAnimationFrame(animation)
 }
