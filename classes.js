@@ -21,7 +21,7 @@ export class Bird {
     }
 
     die() {
-
+        console.log('mati')
     }
 
     draw() {
@@ -52,7 +52,7 @@ export class Pipe {
         this.distances = canvas.width - 30
     }
 
-    generetaRandomHeight(treshold) {
+    generetaRandomHeight() {
         const val = (Math.floor(Math.random() * (canvas.height / 2) + (Math.random() * 30)))
 
         return val
@@ -70,7 +70,7 @@ export class Pipe {
         this.draw()
     }
 
-    regenerate(index) {
+    regenerate() {
         this.x = this.distances * 2 - 30
         this.gap = Math.floor(Math.random() * 20) + 120
         this.bottomHeight = this.generetaRandomHeight()
