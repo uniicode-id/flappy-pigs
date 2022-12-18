@@ -15,7 +15,7 @@ canvas.style.backgroundColor = 'blue'
 canvas.width = 280
 canvas.height = 480
 
-// ---element
+// --- Element
 const dieElement = doc.getElementById('die-message')
 
 // ---------------------------------------------------------------
@@ -29,12 +29,13 @@ const pipes = [
 ]
 
 // --- Game states
+// TODO : create an object
 let treshold = 0
 let onJump = false
 let die = false
 
 // --- Game function mechanics
-function gameMechanics(e) {
+function control(e) {
     // --- player control
     if (e.keyCode === 32) {
         onJump = true
@@ -63,7 +64,7 @@ function gameMechanics(e) {
 //     })
 // })
 
-window.addEventListener('keydown', (e) => gameMechanics(e))
+window.addEventListener('keydown', (e) => control(e))
 window.addEventListener('keyup', (e) => {
     // reset treshold
     treshold = 0
@@ -83,17 +84,18 @@ function collision(pipes) {
 }
 
 // --- Animate function
+// TODO : REFACTOR WHOLE FUNCTION
 function animation() {
     ctx.clearRect(0, 0, canvas.width, canvas.height)
 
+    // TODO : move to single function
     if (onJump === false) {
         player.updates()
     } else {
         player.jump(treshold)
     }
 
-    // console.log(pipes[1].y.top + pipes[1].topHeight)
-
+    // TODO : move to single function
     pipes.forEach((p, i) => {
         p.updates()
 

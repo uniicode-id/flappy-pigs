@@ -8,7 +8,7 @@ export class Bird {
         this.x = x
         this.y = y
         this.speed = speed
-        this.gravity = 0.05
+        this.gravity = 0.5
     }
 
     // --- moving function
