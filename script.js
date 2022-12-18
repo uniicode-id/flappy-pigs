@@ -55,14 +55,13 @@ class Pipe {
         this.gap = 120
         this.width = 80
         this.bottomHeight = generetaRandomHeight()
-        // this.bottomHeight = 80
-        // this.topHeight = canvas.height - (this.bottomHeight - this.gap)
         this.topHeight = canvas.height - (this.bottomHeight + this.gap)
         this.x = x
         this.y = {
             bot: canvas.height - this.bottomHeight,
             top: 0
         }
+        this.distances = canvas.width - 30
     }
 
     draw() {
@@ -78,9 +77,9 @@ class Pipe {
         this.draw()
     }
 
-    regenerate() {
-        this.gap = Math.floor(Math.random() * 20) + 90
-        this.x = canvas.width
+    regenerate(index) {
+        this.x = this.distances * 2 - 30
+        this.gap = Math.floor(Math.random() * 20) + 120
         this.bottomHeight = generetaRandomHeight()
         this.topHeight = canvas.height - (this.bottomHeight + this.gap)
         this.y = {
@@ -94,6 +93,7 @@ class Pipe {
 const player = new Bird({ name: 'galih', x: 12, y: 24, speed: 10 })
 const pipes = [
     new Pipe({ x: canvas.width }),
+    new Pipe({ x: canvas.width * 2 - 20 }),
 ]
 
 function gameMechanics(e) {
@@ -111,11 +111,11 @@ function animation() {
 
     player.updates()
 
-    pipes.forEach(p => {
+    pipes.forEach((p, i) => {
         p.updates()
 
         if (p.x + p.width <= 0) {
-            p.regenerate()
+            p.regenerate(i)
         }
     })
 
