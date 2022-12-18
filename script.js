@@ -122,12 +122,15 @@ function animation() {
 }
 
 // --- Timer function
-function timer(count){
-    let second = Math.floor(count / 60) 
+let mili = 0
+function timer(count) {
+    mili++
+    let miliSecond = mili % 60 == 0 ? mili = 0 : mili
+    let second = Math.floor(count / 60)
     let min = 0
     let hour = 0
 
-    timerElement.innerText = `${hour}:${min}:${second}`
+    timerElement.innerText = `${hour}:${min}:${second}:${miliSecond}`
 }
 
 // --- Main function
