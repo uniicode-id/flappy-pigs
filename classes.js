@@ -7,7 +7,7 @@ export class Bird {
         this.height = 24
         this.x = x
         this.y = y
-        this.speed = speed
+        this.speed = speed * 2
         this.gravity = 0.5
     }
 

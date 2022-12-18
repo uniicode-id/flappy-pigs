@@ -17,6 +17,7 @@ canvas.height = 480
 
 // --- Element
 const dieElement = doc.getElementById('die-message')
+const timerElement = doc.getElementById('timer')
 
 // ---------------------------------------------------------------
 // --- GAME OBJECT ---
@@ -50,7 +51,7 @@ function control(e) {
 // --- Browser event listener for game controller
 // window.addEventListener('mousemove', (e) => {
 //     const rect = canvas.getBoundingClientRect()
-//     console.log(e.clientY - rect.y)
+//     console.log(e.clientX - rect.x)
 //     pipes.forEach((p, i) => {
 //         console.log(`
 //             pipes property:
@@ -113,10 +114,20 @@ function animation() {
     })
 
     const frames = requestAnimationFrame(animation)
+    timer(frames)
 
     if (die) {
         cancelAnimationFrame(frames)
     }
+}
+
+// --- Timer function
+function timer(count){
+    let second = Math.floor(count / 60) 
+    let min = 0
+    let hour = 0
+
+    timerElement.innerText = `${hour}:${min}:${second}`
 }
 
 // --- Main function
@@ -126,3 +137,64 @@ function init() {
 }
 
 init()
+
+
+// const doc = window.document
+
+// const usernameInput = doc.getElementById('usernameInput');
+// const passwordInput = doc.getElementById('passwordInput');
+// const loginButton = doc.getElementById('loginButton');
+// const admin = doc.getElementById('admin');
+// const user = doc.getElementById('user');
+// const form = doc.getElementById('form')
+
+// // reset title
+// admin.style.display = "none";
+// user.style.display = "none";
+
+
+// // login function
+// function onLogin(e) {
+//     e.preventDefault()
+
+//     console.log('tombol di klik sini');
+//     console.log(usernameInput.value)
+//     console.log(passwordInput.value)
+//     localStorage.setItem("admin", usernameInput.value);
+
+//     if(usernameInput.value === '' || passwordInput.value === ''){
+//         alert('Insert datanya dulu gan')
+//         return
+//     }
+// }
+
+// function saveToLocalStorage(){
+//     if (usernameInput.value == "bimaardyansyah" && passwordInput.value == "B1m@ardyans") {
+//         admin.style.display = ("block");
+//         user.style.display = ("none")
+//         localStorage.setItem("role", "admin");
+//         form.hidden = true
+//     } else {
+//         user.style.display = ("block")
+//         admin.style.display = ("none")
+//         localStorage.setItem("role", "user");
+//         form.hidden = true
+//     }
+
+//     if (localStorage.getItem('username')) {
+//         loginButton.style.display = "none"
+
+//         if (localStorage.getItem('role') == "admin") {
+//             admin.style.display = ("block");
+//             user.style.display = ("none")
+//         } else {
+//             user.innerText = `Login sebagai pengguna, halo ${usernameInput.value}`
+//             user.style.display = ("block")
+//             admin.style.display = ("none")
+//         }
+//     }
+// }
+
+// form.addEventListener('submit', (e) => {
+//     onLogin(e)
+// })
