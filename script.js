@@ -21,9 +21,9 @@ class Bird {
 
     // --- moving function
     jump() {
-        this.speed = 10 
+        this.speed = 10
         this.gravity = 0.05
-        this.y -= 100 
+        this.y -= 100
         this.updates()
     }
 
@@ -46,21 +46,30 @@ class Bird {
     }
 }
 
-// class Map {
-//     constructor({ width, height }) {
-//         this.width = width
-//         this.height = height
-//     }
+class Pipe {
+    constructor({ bottom, height, x }) {
+        this.height = height
+        this.x = x
+        this.y = bottom ? canvas.height - this.height : 0
+        this.width = 80
+    }
 
-//     draw() {
-//         ctx.fillRect(0, 0, this.width, this.height)
-//         ctx.fillStyle = 'blue'
-//     }
-// }
+    draw() {
+        ctx.fillRect(this.x, this.y, this.width, this.height)
+        ctx.fillStyle = 'green'
+    }
 
+    updates() {
+        this.x -= 0.75
+
+        this.draw()
+    }
+}
 
 // const map = new Map({ width: 240, height: 1280 })
 const player = new Bird({ name: 'galih', x: 12, y: 24, speed: 10 })
+const pipeDown = new Pipe({ bottom: true, height: 80, x: canvas.width })
+const pipeUp = new Pipe({ botto: false, height: 80, x: canvas.width })
 
 function gameMechanics(e) {
     // --- player control
@@ -76,6 +85,8 @@ function animation() {
     ctx.clearRect(0, 0, canvas.width, canvas.height)
 
     player.updates()
+    pipeUp.updates()
+    pipeDown.updates()
 
     requestAnimationFrame(animation)
 }
