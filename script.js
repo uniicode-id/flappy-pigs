@@ -41,7 +41,6 @@ class Bird {
         this.speed += 1.25
         this.y += this.speed / 10
 
-        console.log(this.y)
         this.draw()
     }
 }
@@ -64,12 +63,18 @@ class Pipe {
 
         this.draw()
     }
+
+    regenerate() {
+        this.x = canvas.width
+    }
 }
 
 // const map = new Map({ width: 240, height: 1280 })
 const player = new Bird({ name: 'galih', x: 12, y: 24, speed: 10 })
-const pipeDown = new Pipe({ bottom: true, height: 80, x: canvas.width })
-const pipeUp = new Pipe({ botto: false, height: 80, x: canvas.width })
+const pipes = {
+    down: new Pipe({ bottom: true, height: 80, x: canvas.width }),
+    up: new Pipe({ botto: false, height: 80, x: canvas.width })
+}
 
 function gameMechanics(e) {
     // --- player control
@@ -85,8 +90,16 @@ function animation() {
     ctx.clearRect(0, 0, canvas.width, canvas.height)
 
     player.updates()
-    pipeUp.updates()
-    pipeDown.updates()
+
+    for (const i in pipes) {
+        pipes[i].updates()
+    }
+
+    if (pipes.up.x + pipes.up.width <= 0) {
+        for (const i in pipes) {
+            pipes[i].regenerate()
+        }
+    }
 
     requestAnimationFrame(animation)
 }
