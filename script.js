@@ -10,12 +10,10 @@ const doc = window.document
 export const canvas = doc.getElementById('canvas')
 export const ctx = canvas.getContext('2d')
 
-// --- canvas property
 canvas.style.backgroundColor = 'blue'
 canvas.width = 280
 canvas.height = 480
 
-// --- Element
 const dieElement = doc.getElementById('die-message')
 const timerElement = doc.getElementById('timer')
 
@@ -34,10 +32,11 @@ const pipes = [
 let treshold = 0
 let onJump = false
 let die = false
+let score = 0
 
 // --- Game function mechanics
+// --- player control
 function control(e) {
-    // --- player control
     if (e.keyCode === 32) {
         onJump = true
         treshold += 0.25
@@ -114,90 +113,71 @@ function animation() {
     })
 
     const frames = requestAnimationFrame(animation)
-    timer(frames)
+    fpsTime(frames)
 
     if (die) {
         cancelAnimationFrame(frames)
+        timer(false)
     }
 }
 
 // --- Timer function
-let mili = 0
-function timer(count) {
-    mili++
-    let miliSecond = mili % 60 == 0 ? mili = 0 : mili
-    let second = Math.floor(count / 60)
+function timer(on) {
+    if (!on) return
+
+    let miliSecond = 0
+    let second = 0
     let min = 0
     let hour = 0
 
-    timerElement.innerText = `${hour}:${min}:${second}:${miliSecond}`
+    setInterval(() => {
+        // miliSecond % 1000 == 0 ? 0 : miliSecond
+        miliSecond++
+
+        if (miliSecond == 1000) {
+            miliSecond = 0
+            second++
+        }
+        if (second == 60) {
+            second = 0
+            min++
+        }
+
+        if (min == 60) {
+            min = 60
+            hour++
+        }
+
+        timerElement.innerText = `${hour}:${min}:${second}:${miliSecond}`
+    }, 1)
+}
+
+function fpsTime(frames) {
+    const fpsTimer = doc.getElementById('fps')
+
+    let fm = frames % 60 == 0 ? 0 : frames
+    let second = Math.floor(fm / 60)
+    let min = 0
+    let hour = 0
+
+    if (second == 60) {
+        second = 0
+        min++
+    }
+
+    if (min == 60) {
+        min = 60
+        hour++
+    }
+
+    fpsTimer.innerText = `${hour}:${min}:${second}:${frames}`
 }
 
 // --- Main function
 function init() {
     dieElement.hidden = true
     animation()
+    timer(true)
 }
 
 init()
-
-
-// const doc = window.document
-
-// const usernameInput = doc.getElementById('usernameInput');
-// const passwordInput = doc.getElementById('passwordInput');
-// const loginButton = doc.getElementById('loginButton');
-// const admin = doc.getElementById('admin');
-// const user = doc.getElementById('user');
-// const form = doc.getElementById('form')
-
-// // reset title
-// admin.style.display = "none";
-// user.style.display = "none";
-
-
-// // login function
-// function onLogin(e) {
-//     e.preventDefault()
-
-//     console.log('tombol di klik sini');
-//     console.log(usernameInput.value)
-//     console.log(passwordInput.value)
-//     localStorage.setItem("admin", usernameInput.value);
-
-//     if(usernameInput.value === '' || passwordInput.value === ''){
-//         alert('Insert datanya dulu gan')
-//         return
-//     }
-// }
-
-// function saveToLocalStorage(){
-//     if (usernameInput.value == "bimaardyansyah" && passwordInput.value == "B1m@ardyans") {
-//         admin.style.display = ("block");
-//         user.style.display = ("none")
-//         localStorage.setItem("role", "admin");
-//         form.hidden = true
-//     } else {
-//         user.style.display = ("block")
-//         admin.style.display = ("none")
-//         localStorage.setItem("role", "user");
-//         form.hidden = true
-//     }
-
-//     if (localStorage.getItem('username')) {
-//         loginButton.style.display = "none"
-
-//         if (localStorage.getItem('role') == "admin") {
-//             admin.style.display = ("block");
-//             user.style.display = ("none")
-//         } else {
-//             user.innerText = `Login sebagai pengguna, halo ${usernameInput.value}`
-//             user.style.display = ("block")
-//             admin.style.display = ("none")
-//         }
-//     }
-// }
-
-// form.addEventListener('submit', (e) => {
-//     onLogin(e)
-// })
